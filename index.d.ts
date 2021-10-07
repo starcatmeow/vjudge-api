@@ -67,7 +67,7 @@ export default class VJudge{
     async listMyContest(): Promise<Contest[]>;
     async getContestDetail(contestId: string | number): Promise<ContestDetail>;
     async getProblemDescription(descriptionId: string | number, descriptionVersion: string | number): Promise<string>;
-    async submitCode(contestId: string | number, problemNum: string, code: string, langauge: string | number, captcha?: string): Promise<number>;
+    async submitCode(contestId: string | number, problemNum: string, code: string, language: string | number, captcha?: string): Promise<number>;
     async getCaptchaImage(): Promise<string>;
     async fetchSolution(runId: string | number): Promise<Solution>;
 }
