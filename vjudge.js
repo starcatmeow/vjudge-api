@@ -4,11 +4,7 @@ import { wrapper } from 'axios-cookiejar-support';
 import { CookieJar } from 'tough-cookie';
 import { descriptionStyle } from './style.js';
 import { CaptchaURL, CheckLoginStatusURL, FetchContestDetailURL, FetchContestListURL, FetchProblemDescriptionURL, FetchSolutionURL, LoginURL, SubmitProblemURL } from './url.js';
-export const Openness = {
-    Public: 0,
-    Protected: 1,
-    Private: 2,
-};
+
 export class VJudge{
     constructor(){
         const jar = new CookieJar();
