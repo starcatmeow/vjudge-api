@@ -1,0 +1,30 @@
+{
+  "name": "vjudge-api",
+  "version": "0.1.0",
+  "description": "Unofficial VJudge API for JS",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/starcatmeow/vjudge-api.git"
+  },
+  "keywords": [
+    "VJudge",
+    "API"
+  ],
+  "author": "Dongruixuan Li",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/starcatmeow/vjudge-api/issues"
+  },
+  "homepage": "https://github.com/starcatmeow/vjudge-api#readme",
+  "dependencies": {
+    "@xmldom/xmldom": "^0.7.5",
+    "axios": "^0.22.0",
+    "axios-cookiejar-support": "^2.0.2",
+    "tough-cookie": "^4.0.0"
+  }
+}
