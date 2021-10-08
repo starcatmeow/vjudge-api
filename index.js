@@ -1,2 +1,4 @@
-import { VJudge } from "./vjudge.js";
-export default VJudge;
+const { VJudge } = require("./vjudge.js");
+module.exports = {
+    default: VJudge
+};

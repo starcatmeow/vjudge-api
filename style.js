@@ -1,4 +1,4 @@
-export const descriptionStyle = `
+module.exports.descriptionStyle = `
 dt {
     font-weight: bold;
     margin-top: 20px;

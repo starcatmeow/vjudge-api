@@ -4,7 +4,7 @@ export enum Openness {
     Public = 0,
     Protected = 1,
     Private = 2,
-};
+}
 export interface Contest {
     id: number;
     title: string;
@@ -42,6 +42,7 @@ export interface ContestDetail {
     problems: Problem[];
 }
 export interface Solution {
+    additionalInfo?: string;
     author: string;
     authorId: number;
     contestId: number;
@@ -59,15 +60,22 @@ export interface Solution {
     statusType: number;
     submitTime: number;
 }
+export interface Submission {
+    submitterId: number;
+    problemIndex: number;
+    accepted: number;
+    time: number;
+}
 export default class VJudge{
     client: AxiosInstance;
-    async login(username: string, password: string): Promise<void>;
-    async checkLoginStatus(): Promise<boolean>;
-    async ensureLoginStatus(): Promise<void>;
-    async listMyContest(): Promise<Contest[]>;
-    async getContestDetail(contestId: string | number): Promise<ContestDetail>;
-    async getProblemDescription(descriptionId: string | number, descriptionVersion: string | number): Promise<string>;
-    async submitCode(contestId: string | number, problemNum: string, code: string, language: string | number, captcha?: string): Promise<number>;
-    async getCaptchaImage(): Promise<string>;
-    async fetchSolution(runId: string | number): Promise<Solution>;
+    login(username: string, password: string): Promise<number>;
+    checkLoginStatus(): Promise<boolean>;
+    ensureLoginStatus(): Promise<void>;
+    listMyContest(): Promise<Contest[]>;
+    getContestDetail(contestId: string | number): Promise<ContestDetail>;
+    getProblemDescription(descriptionId: string | number, descriptionVersion: string | number): Promise<string>;
+    submitCode(contestId: string | number, problemNum: string, code: string, language: string | number, captcha?: string): Promise<number>;
+    getCaptchaImage(): Promise<string>;
+    fetchSolution(runId: string | number): Promise<Solution>;
+    fetchSubmissions(contestId: string | number): Promise<Submission[]>;
 }
