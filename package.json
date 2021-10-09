@@ -1,6 +1,6 @@
 {
   "name": "@starcatmeow/vjudge-api",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Unofficial VJudge API for JS",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,6 @@
   "dependencies": {
     "@xmldom/xmldom": "^0.7.5",
     "axios": "^0.22.0",
-    "axios-cookiejar-support": "^2.0.2",
     "tough-cookie": "^4.0.0"
   }
 }

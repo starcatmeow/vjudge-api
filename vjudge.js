@@ -1,14 +1,27 @@
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom');
-const axios = require('axios');
-const { wrapper } = require('axios-cookiejar-support');
-const { CookieJar } = require('tough-cookie');
+const { default: axios } = require('axios');
+const { CookieJar, Cookie } = require('tough-cookie');
 const { descriptionStyle } = require('./style.js');
 const { CaptchaURL, CheckLoginStatusURL, FetchContestDetailURL, FetchContestListURL, FetchProblemDescriptionURL, FetchSolutionURL, FetchSubmissionsURL, HomeURL, LoginURL, ProfileURL, SubmitProblemURL } = require('./url.js');
 
 class VJudge{
     constructor(){
         const jar = new CookieJar();
-        this.client = wrapper(axios.create({ jar }));
+        this.client = axios.create({ jar });
+        this.client.interceptors.request.use(function (config){
+            jar.getCookies(config.url, function(_, cookies) {
+                config.headers.cookie = cookies.map(cookie => `${cookie.key}=${cookie.value}`).join('; ');
+            });
+            return config;
+        })
+        this.client.interceptors.response.use(function (response){
+            if (response.headers['set-cookie'] instanceof Array) {
+                response.headers['set-cookie'].forEach(function (c) {
+                    jar.setCookie(Cookie.parse(c), response.config.url, function(){});
+                });
+            }
+            return response;
+        })
         this.lastLogin = 0;
     }
     async login(username, password){
@@ -25,8 +38,7 @@ class VJudge{
         const result = res.data;
         if (result !== 'success')throw result;
         const profileHtml = (await this.client.get(ProfileURL + username)).data;
-        const profileDom = new DOMParser().parseFromString(profileHtml, 'text/html');
-        const userId = Object.values(profileDom.getElementById('visitor_userId').attributes).find(attr => attr.name === 'value').value;
+        const userId = profileHtml.match(/\(#(\d+)\)/)[1];
         this.lastLogin = new Date().getTime();
         return Number.parseInt(userId);
     }
