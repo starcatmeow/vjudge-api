@@ -2,7 +2,7 @@ const { DOMParser, XMLSerializer } = require('@xmldom/xmldom');
 const { default: axios } = require('axios');
 const { CookieJar, Cookie } = require('tough-cookie');
 const { descriptionStyle } = require('./style.js');
-const { CaptchaURL, CheckLoginStatusURL, FetchContestDetailURL, FetchContestListURL, FetchProblemDescriptionURL, FetchSolutionURL, FetchSubmissionsURL, HomeURL, LoginURL, ProfileURL, SubmitProblemURL } = require('./url.js');
+const { CaptchaURL, CheckLoginStatusURL, FetchContestDetailURL, FetchContestListURL, FetchProblemDescriptionURL, FetchSolutionURL, FetchSubmissionsURL, HomeURL, LoginURL, ProfileURL, SubmitProblemURL, FetchProblemDetailURL } = require('./url.js');
 
 class VJudge{
     constructor(){
@@ -79,7 +79,6 @@ class VJudge{
         await this.ensureLoginStatus();
         const html = (await this.client.get(FetchContestDetailURL + contestId)).data;
         const dom = new DOMParser().parseFromString(html, 'text/html');
-        console.log(dom.documentElement);
         const detailJson = Object.values(Object.values(dom.documentElement
                             .childNodes).find(node => node.nodeName === 'body')
                             .childNodes).find(node => node.nodeName === 'textarea').firstChild.nodeValue;
@@ -152,6 +151,23 @@ class VJudge{
             accepted: submission[2],
             time: submission[3]
         }));
+    }
+    async getProblemDetail(problemTextId){
+        console.log(`${FetchProblemDetailURL}${problemTextId}`);
+        const html = await this.client.get(`${FetchProblemDetailURL}${problemTextId}`);
+        const dom = new DOMParser().parseFromString(html.data, 'text/html');
+        const detailJson = Object.values(Object.values(dom.documentElement
+            .childNodes).find(node => node.nodeName === 'body')
+            .childNodes).find(node => node.nodeName === 'textarea').firstChild.nodeValue;
+        const detail = JSON.parse(detailJson);
+        detail.descriptions = Object.values(dom.getElementById('prob-descs').childNodes)
+            .filter(node => node.nodeName === 'li')
+            .map(node => ({
+                id: Number.parseInt(node.getAttribute('data-id')),
+                version: Number.parseInt(node.getAttribute('data-version')),
+                author: node.getAttribute('data-author'),
+            }));
+        return detail;
     }
 }
 

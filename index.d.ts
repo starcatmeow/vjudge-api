@@ -66,6 +66,22 @@ export interface Submission {
     accepted: number;
     time: number;
 }
+export interface Description {
+    id: number;
+    version: number;
+    author: string;
+}
+export interface ProblemDetail {
+    accepted: boolean;
+    allowSubmit: boolean;
+    attempted: boolean;
+    isFav: boolean;
+    languages: Record<string, string>;
+    problemId: number;
+    properties: ProblemProperty[];
+    status: number;
+    descriptions: Description[];
+}
 export default class VJudge{
     client: AxiosInstance;
     login(username: string, password: string): Promise<number>;
@@ -78,4 +94,5 @@ export default class VJudge{
     getCaptchaImage(): Promise<string>;
     fetchSolution(runId: string | number): Promise<Solution>;
     fetchSubmissions(contestId: string | number): Promise<Submission[]>;
+    fetchProblemDetail(problemTextId: string): Promise<ProblemDetail>;
 }

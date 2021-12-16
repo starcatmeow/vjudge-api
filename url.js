@@ -9,5 +9,6 @@ module.exports = {
     CaptchaURL: "https://vjudge.net/util/captcha?",
     HomeURL: "https://vjudge.net/",
     ProfileURL: "https://vjudge.net/user/",
-    FetchSubmissionsURL: "https://vjudge.net/contest/rank/single/"
+    FetchSubmissionsURL: "https://vjudge.net/contest/rank/single/",
+    FetchProblemDetailURL: "https://vjudge.net/problem/",
 }
