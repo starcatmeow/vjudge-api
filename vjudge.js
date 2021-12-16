@@ -152,7 +152,7 @@ class VJudge{
             time: submission[3]
         }));
     }
-    async getProblemDetail(problemTextId){
+    async fetchProblemDetail(problemTextId){
         console.log(`${FetchProblemDetailURL}${problemTextId}`);
         const html = await this.client.get(`${FetchProblemDetailURL}${problemTextId}`);
         const dom = new DOMParser().parseFromString(html.data, 'text/html');
