@@ -153,12 +153,15 @@ class VJudge{
         }));
     }
     async fetchProblemDetail(problemTextId){
-        console.log(`${FetchProblemDetailURL}${problemTextId}`);
+        const regex = /(.*?)-(.*)/g
+        const [_, oj, probNum] = regex.exec(problemTextId);
         const html = await this.client.get(`${FetchProblemDetailURL}${problemTextId}`);
         const dom = new DOMParser().parseFromString(html.data, 'text/html');
         const detailJson = Object.values(Object.values(dom.documentElement
             .childNodes).find(node => node.nodeName === 'body')
             .childNodes).find(node => node.nodeName === 'textarea').firstChild.nodeValue;
+        const title = Object.values(dom.getElementById('prob-title').childNodes)
+            .filter(node => node.nodeName === 'h2')[0].firstChild.nodeValue;
         const detail = JSON.parse(detailJson);
         detail.descriptions = Object.values(dom.getElementById('prob-descs').childNodes)
             .filter(node => node.nodeName === 'li')
@@ -167,6 +170,9 @@ class VJudge{
                 version: Number.parseInt(node.getAttribute('data-version')),
                 author: node.getAttribute('data-author'),
             }));
+        detail.oj = oj;
+        detail.probNum = probNum;
+        detail.title = title;
         return detail;
     }
 }

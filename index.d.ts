@@ -81,6 +81,9 @@ export interface ProblemDetail {
     properties: ProblemProperty[];
     status: number;
     descriptions: Description[];
+    oj: string;
+    probNum: string;
+    title: string;
 }
 export default class VJudge{
     client: AxiosInstance;
