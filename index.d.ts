@@ -87,7 +87,7 @@ export interface ProblemDetail {
 }
 export default class VJudge{
     client: AxiosInstance;
-    login(username: string, password: string): Promise<number>;
+    login(username: string, password: string): Promise<void>;
     checkLoginStatus(): Promise<boolean>;
     ensureLoginStatus(): Promise<void>;
     listMyContest(): Promise<Contest[]>;

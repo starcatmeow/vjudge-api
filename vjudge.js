@@ -37,10 +37,7 @@ class VJudge{
         });
         const result = res.data;
         if (result !== 'success')throw result;
-        const profileHtml = (await this.client.get(ProfileURL + username)).data;
-        const userId = profileHtml.match(/\(#(\d+)\)/)[1];
         this.lastLogin = new Date().getTime();
-        return Number.parseInt(userId);
     }
     async checkLoginStatus(){
         const res = await this.client.post(CheckLoginStatusURL);
