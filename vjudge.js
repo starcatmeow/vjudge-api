@@ -88,28 +88,36 @@ class VJudge{
         await this.ensureLoginStatus();
         const html = (await this.client.get(`${FetchProblemDescriptionURL}${descriptionId}?${descriptionVersion}`)).data;
         const dom = new DOMParser().parseFromString(html, 'text/html');
-        const styleElement = Object.values(Object.values(dom.documentElement
-                            .childNodes).find(node => node.nodeName === 'head')
-                            .childNodes).find(node => node.nodeName === 'style');
-        styleElement.firstChild.data = descriptionStyle;
+        const styleText = dom.createTextNode(descriptionStyle);
+        const styleElement = dom.createElement('style');
+        styleElement.appendChild(styleText);
+        Object.values(dom.documentElement.childNodes)
+            .find(node => node.nodeName === 'head')
+            .appendChild(styleElement); // inject customized style
+        const originalStyleSheet = Object.values(Object.values(dom.documentElement.childNodes)
+            .find(node => node.nodeName === 'head').childNodes)
+            .filter(node => node.nodeName === 'link')[0];
+        originalStyleSheet.parentNode.removeChild(originalStyleSheet);
+        const bodyElement = Object.values(dom.documentElement.childNodes).find(node => node.nodeName === 'body');
+        const cdnScript = dom.createElement('script');
+        const cdnText = dom.createTextNode('localStorage.setItem("cdnBaseUrl",\'{"val":"https://vj.ppsucxtt.cn/","version":1633630055459}\');basePath = "https://vjudge.net/";');
+        cdnScript.appendChild(cdnText);
+        cdnScript.setAttribute('type', 'text/javascript');
+        bodyElement.appendChild(cdnScript);
         const scriptElements = Object.values(Object.values(dom.documentElement
-            .childNodes).find(node => node.nodeName === 'body')
+            .childNodes).find(node => node.nodeName === 'head')
             .childNodes).filter(node => node.nodeName === 'script');
         scriptElements.forEach(scriptElement => {
             const parentNode = scriptElement.parentNode;
             const src = scriptElement.getAttributeNode('src');
             if(!src)return;
-            const newElement = dom.createElement('script');
-            newElement.setAttribute('src', 'https://vjudge.net' + src.value);
             parentNode.removeChild(scriptElement);
-            parentNode.appendChild(newElement);
         });
-        const headElement = Object.values(dom.documentElement.childNodes).find(node => node.nodeName === 'head');
-        const cdnScript = dom.createElement('script');
-        const cdnText = dom.createTextNode('localStorage.setItem("cdnBaseUrl",\'{"val":"https://vj.ppsucxtt.cn/","version":1633630055459}\')');
-        cdnScript.appendChild(cdnText);
-        cdnScript.setAttribute('type', 'text/javascript');
-        headElement.appendChild(cdnScript);
+        ["fb5f8cf1a877d10ea7fd.js","eaca2e6abbe57346b0b3.js","1145eb98e267922ce6a0.js"].forEach(js => {
+            const newElement = dom.createElement('script');
+            newElement.setAttribute('src', 'https://cdn.jsdelivr.net/gh/starcatmeow/vjudge-cdn/' + js);
+            bodyElement.appendChild(newElement);
+        })
         const modifiedHtml = new XMLSerializer().serializeToString(dom);
         return modifiedHtml;
     }
