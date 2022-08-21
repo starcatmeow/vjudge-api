@@ -123,7 +123,7 @@ class VJudge{
         await this.ensureLoginStatus();
         const params = new URLSearchParams();
         params.append('language', language);
-        params.append('share', '0');
+        params.append('open', '0');
         params.append('source', Buffer.from(encodeURIComponent(code)).toString('base64'));
         params.append('captcha', captcha || '');
         params.append('password', '');
