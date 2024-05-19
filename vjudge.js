@@ -122,6 +122,7 @@ class VJudge{
     async submitCode(contestId, problemNum, code, language, captcha){
         await this.ensureLoginStatus();
         const params = new URLSearchParams();
+        params.append('method', '0');
         params.append('language', language);
         params.append('open', '0');
         params.append('source', Buffer.from(encodeURIComponent(code)).toString('base64'));
