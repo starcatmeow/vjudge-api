@@ -172,7 +172,7 @@ class VJudge{
         detail.descriptions = Object.values(dom.getElementById('prob-descs').childNodes)
             .filter(node => node.nodeName === 'li')
             .map(node => ({
-                id: Number.parseInt(node.getAttribute('data-id')),
+                id: Number.parseInt(node.getAttribute('data-key')),
                 version: Number.parseInt(node.getAttribute('data-version')),
                 author: node.getAttribute('data-author'),
             }));
