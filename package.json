@@ -1,6 +1,6 @@
 {
   "name": "@starcatmeow/vjudge-api",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Unofficial VJudge API for JS",
   "main": "index.js",
   "scripts": {

@@ -18,7 +18,7 @@ export interface Contest {
 export interface ProblemProperty {
     title: string;
     content: string;
-    hint: boolean;
+    spoiler: boolean;
 }
 export interface Problem {
     pid: number;
@@ -27,9 +27,16 @@ export interface Problem {
     num: string;
     title: string;
     languages: Record<number, string>;
-    publicDescId: number;
-    publicDescVersion: number;
+    enabledDescKeys: number[];
+    descBriefs: ProblemDescBrief[];
     properties: ProblemProperty[];
+}
+export interface ProblemDescBrief {
+    key: number;
+    updateDate: string;
+    version: number;
+    author: string;
+    remarks: string;
 }
 export interface ContestDetail {
     id: number;
